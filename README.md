@@ -6,10 +6,13 @@ Repositorio destinado ao projeto de extensão sobre serviços AWS IoT . Utilizan
 Este projeto tem como objetivo estabelecer uma conexão segura entre um dispositivo ESP8266 e o serviço AWS IoT Core usando o protocolo MQTT (Message Queuing Telemetry Transport). O ESP8266 atuará como um dispositivo IoT capaz de enviar e receber dados por meio da nuvem, utilizando a infraestrutura oferecida pela Amazon Web Services (AWS).
 Objetivos
 
-    >Configuração do ESP8266: Programar o ESP8266 para que ele possa se conectar à internet e interagir com o serviço AWS IoT Core.
-    >Estabelecer Conexão Segura: Implementar uma conexão segura usando certificados SSL/TLS fornecidos pelo AWS IoT Core.
-    >Comunicação MQTT: Configurar tópicos MQTT para enviar e receber mensagens entre o ESP8266 e o AWS IoT Core.
-    >Monitoramento e Controle Remoto: Demonstrar como os dados coletados pelo ESP8266 podem ser monitorados e como o dispositivo pode ser controlado remotamente por meio do AWS IoT Core.
+    > Configuração do ESP8266: Programar o ESP8266 para que ele possa se conectar à internet e interagir com o 
+                              serviço AWS IoT Core.
+    > Estabelecer Conexão Segura: Implementar uma conexão segura usando certificados SSL/TLS fornecidos
+                                 pelo AWS IoT Core.
+    > Comunicação MQTT: Configurar tópicos MQTT para enviar e receber mensagens entre o ESP8266 e o AWS IoT Core.
+    > Monitoramento e Controle Remoto: Demonstrar como os dados coletados pelo ESP8266 podem ser monitorados 
+                                    e como o dispositivo pode ser controlado remotamente por meio do AWS IoT Core.
 
 ## Pré-requisitos
 ### Hardware
