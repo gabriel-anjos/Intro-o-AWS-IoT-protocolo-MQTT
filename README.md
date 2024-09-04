@@ -1,33 +1,33 @@
 # Intro-o-AWS-IoT-protocolo-MQTT
 Repositorio destinado ao projeto de extensão sobre serviços AWS IoT . Utilizando como exemplo um código sobre o protocolo MQTT.
 
-Visão Geral
+##Visão Geral
 
 Este projeto tem como objetivo estabelecer uma conexão segura entre um dispositivo ESP8266 e o serviço AWS IoT Core usando o protocolo MQTT (Message Queuing Telemetry Transport). O ESP8266 atuará como um dispositivo IoT capaz de enviar e receber dados por meio da nuvem, utilizando a infraestrutura oferecida pela Amazon Web Services (AWS).
 Objetivos
 
-    Configuração do ESP8266: Programar o ESP8266 para que ele possa se conectar à internet e interagir com o serviço AWS IoT Core.
-    Estabelecer Conexão Segura: Implementar uma conexão segura usando certificados SSL/TLS fornecidos pelo AWS IoT Core.
-    Comunicação MQTT: Configurar tópicos MQTT para enviar e receber mensagens entre o ESP8266 e o AWS IoT Core.
-    Monitoramento e Controle Remoto: Demonstrar como os dados coletados pelo ESP8266 podem ser monitorados e como o dispositivo pode ser controlado remotamente por meio do AWS IoT Core.
+    -Configuração do ESP8266: Programar o ESP8266 para que ele possa se conectar à internet e interagir com o serviço AWS IoT Core.
+    -Estabelecer Conexão Segura: Implementar uma conexão segura usando certificados SSL/TLS fornecidos pelo AWS IoT Core.
+    -Comunicação MQTT: Configurar tópicos MQTT para enviar e receber mensagens entre o ESP8266 e o AWS IoT Core.
+    -Monitoramento e Controle Remoto: Demonstrar como os dados coletados pelo ESP8266 podem ser monitorados e como o dispositivo pode ser controlado remotamente por meio do AWS IoT Core.
 
-Pré-requisitos
-Hardware
+##Pré-requisitos
+###Hardware
 
-    ESP8266: Um microcontrolador com capacidade de conexão Wi-Fi.
-    Sensores/Atores: Sensores de temperatura, umidade, etc., conforme a necessidade do projeto.
-    Cabo USB: Para programar o ESP8266 e fornecer energia.
+    -ESP8266: Um microcontrolador com capacidade de conexão Wi-Fi.
+    -Sensores/Atores: Sensores de temperatura, umidade, etc., conforme a necessidade do projeto.
+    -Cabo USB: Para programar o ESP8266 e fornecer energia.
 
-Software
+###Software
 
-    Arduino IDE: Ambiente de desenvolvimento para programar o ESP8266.
-    Bibliotecas Arduino:
+    -Arduino IDE: Ambiente de desenvolvimento para programar o ESP8266.
+    -Bibliotecas Arduino:
         ESP8266WiFi: Para gerenciar a conexão Wi-Fi.
         PubSubClient: Para implementar o protocolo MQTT.
-    AWS Account: Conta na AWS para acessar o AWS IoT Core.
-    AWS CLI: Ferramenta de linha de comando para interagir com os serviços AWS.
+    -AWS Account: Conta na AWS para acessar o AWS IoT Core.
+    -AWS CLI: Ferramenta de linha de comando para interagir com os serviços AWS.
 
-Etapas do Projeto
+##Etapas do Projeto
 1. Configuração do Ambiente AWS
 
     Criar uma Thing no AWS IoT Core:
@@ -63,7 +63,7 @@ Etapas do Projeto
     Validação de Segurança:
         Assegure que a comunicação está sendo feita de forma segura e que o dispositivo está corretamente autenticado.
 
-Conclusão
+##Conclusão
 
 Ao final deste projeto, o ESP8266 estará conectado ao AWS IoT Core, enviando e recebendo dados via MQTT de forma segura. Esse tipo de solução é ideal para aplicações em automação residencial, monitoramento ambiental, e outras iniciativas de IoT que necessitem de comunicação eficiente e segura com a nuvem.
 Referências
