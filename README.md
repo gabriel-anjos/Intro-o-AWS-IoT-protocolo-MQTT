@@ -68,48 +68,6 @@ pip install AWSIoTPythonSDK
 
 ### 2. Script Python para Conexão MQTT
 
-Abaixo está um exemplo de script em Python para conectar ao AWS IoT Core usando MQTT:
-
-```python
-from AWSIoTPythonSDK.MQTTLib import AWSIoTMQTTClient
-
-# Configurações do AWS IoT
-client_id = "meuDispositivo"
-endpoint = "seu-endpoint-ats.iot.<regiao>.amazonaws.com"
-root_ca = "caminho/para/AmazonRootCA1.pem"
-private_key = "caminho/para/seu-certificado-private.pem.key"
-cert = "caminho/para/seu-certificado.pem.crt"
-topic = "meu/topico/mqtt"
-
-# Inicializar o cliente MQTT
-mqtt_client = AWSIoTMQTTClient(client_id)
-mqtt_client.configureEndpoint(endpoint, 8883)
-mqtt_client.configureCredentials(root_ca, private_key, cert)
-
-# Configurações adicionais do MQTT
-mqtt_client.configureOfflinePublishQueueing(-1)  # Fila de mensagens offline ilimitada
-mqtt_client.configureDrainingFrequency(2)  # Processa 2 mensagens/segundo ao reconectar
-mqtt_client.configureConnectDisconnectTimeout(10)  # Timeout para conectar/desconectar
-mqtt_client.configureMQTTOperationTimeout(5)  # Timeout para operações MQTT (publicar, assinar, etc.)
-
-# Função de callback para mensagens recebidas
-def custom_callback(client, userdata, message):
-    print(f"Mensagem recebida: {message.payload} de {message.topic}")
-
-# Conectar ao AWS IoT Core
-mqtt_client.connect()
-
-# Inscrever-se no tópico
-mqtt_client.subscribe(topic, 1, custom_callback)
-
-# Publicar uma mensagem
-mqtt_client.publish(topic, "Hello from Python!", 1)
-
-# Manter o script rodando
-import time
-while True:
-    time.sleep(1)
-```
 
 ### 3. Executar o Script
 
