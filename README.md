@@ -1,77 +1,141 @@
 # Intro-o-AWS-IoT-protocolo-MQTT
 Repositorio destinado ao projeto de extensão sobre serviços AWS IoT . Utilizando como exemplo um código sobre o protocolo MQTT.
 
-## Visão Geral
+# Projeto: Conexão MQTT em Python com AWS IoT Core
 
-Este projeto tem como objetivo estabelecer uma conexão segura entre um dispositivo ESP8266 e o serviço AWS IoT Core usando o protocolo MQTT (Message Queuing Telemetry Transport). O ESP8266 atuará como um dispositivo IoT capaz de enviar e receber dados por meio da nuvem, utilizando a infraestrutura oferecida pela Amazon Web Services (AWS).
+## Introdução
+
+Este projeto tem como objetivo estabelecer uma conexão entre um dispositivo local e a nuvem da AWS usando o protocolo MQTT (Message Queuing Telemetry Transport). A comunicação MQTT é leve e eficiente, ideal para aplicações de Internet das Coisas (IoT). Utilizaremos o AWS IoT Core como o serviço de gerenciamento de dispositivos e a biblioteca Python `paho-mqtt` para implementar a conexão MQTT.
 
 ## Objetivos
 
-    -Configuração do ESP8266: Programar o ESP8266 para que ele possa se conectar à internet e interagir com o 
-                              serviço AWS IoT Core.
-    -Estabelecer Conexão Segura: Implementar uma conexão segura usando certificados SSL/TLS fornecidos
-                                 pelo AWS IoT Core.
-    -Comunicação MQTT: Configurar tópicos MQTT para enviar e receber mensagens entre o ESP8266 e o AWS IoT Core.
-    -Monitoramento e Controle Remoto: Demonstrar como os dados coletados pelo ESP8266 podem ser monitorados e 
-                                      como o dispositivo pode ser controlado remotamente por meio do AWS IoT Core.
+1. Estabelecer uma conexão segura MQTT entre um dispositivo local e o AWS IoT Core.
+2. Publicar e assinar mensagens em um tópico MQTT na AWS.
+3. Gerenciar as credenciais de segurança e a configuração do dispositivo na AWS.
+4. Monitorar e testar a comunicação através do console da AWS.
 
 ## Pré-requisitos
-### Hardware
 
-    -ESP8266: Um microcontrolador com capacidade de conexão Wi-Fi.
-    -Sensores/Atores: Sensores de temperatura, umidade, etc., conforme a necessidade do projeto.
-    -Cabo USB: Para programar o ESP8266 e fornecer energia.
+- Conta AWS ativa.
+- Python 3.x instalado.
+- Bibliotecas Python: `paho-mqtt`, `AWSIoTPythonSDK`.
+- Certificados de segurança (chave privada, certificado do cliente, certificado da CA) fornecidos pelo AWS IoT Core.
 
-### Software
+## Configuração do AWS IoT Core
 
-    -Arduino IDE: Ambiente de desenvolvimento para programar o ESP8266.
-    -Bibliotecas Arduino:
-        ESP8266WiFi: Para gerenciar a conexão Wi-Fi.
-        PubSubClient: Para implementar o protocolo MQTT.
-    -AWS Account: Conta na AWS para acessar o AWS IoT Core.
-    -AWS CLI: Ferramenta de linha de comando para interagir com os serviços AWS.
+### 1. Criar um "thing" na AWS IoT
 
-## Etapas do Projeto
-1. Configuração do Ambiente AWS
+1. Acesse o console AWS IoT Core.
+2. Navegue até "Manage" > "Things" e clique em "Create".
+3. Siga as etapas para criar um novo "thing" e baixar os certificados de segurança (chave privada, certificado do cliente e certificado da CA). 
 
-    Criar uma Thing no AWS IoT Core:
-        Acesse o console do AWS IoT Core.
-        Crie uma nova Thing que representará o ESP8266.
-        Gere e faça download dos certificados e chaves de segurança.
+### 2. Configurar uma política IoT
 
-    Configurar Tópicos MQTT:
-        No console do AWS IoT, configure os tópicos MQTT que serão utilizados para comunicação.
+1. Em "Secure" > "Policies", crie uma nova política IoT que permita ao dispositivo publicar e assinar em tópicos específicos.
+2. Conceda permissões adequadas, por exemplo:
+    ```json
+    {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Effect": "Allow",
+          "Action": [
+            "iot:Publish",
+            "iot:Subscribe",
+            "iot:Connect",
+            "iot:Receive"
+          ],
+          "Resource": "arn:aws:iot:<region>:<account-id>:topic/*"
+        }
+      ]
+    }
+    ```
 
-    Políticas de Segurança:
-        Crie e associe uma política que permita ao dispositivo conectar-se ao AWS IoT Core e publicar/subscrever nos tópicos MQTT.
+### 3. Atribuir a política ao "thing"
 
-2. Programação do ESP8266
+1. Navegue até o seu "thing".
+2. Vincule os certificados e a política criada anteriormente.
 
-    Configurar a Conexão Wi-Fi:
-        Use a biblioteca ESP8266WiFi para conectar o ESP8266 à rede Wi-Fi local.
+## Configuração do Cliente Python
 
-    Estabelecer Conexão MQTT:
-        Utilize a biblioteca PubSubClient para configurar a conexão MQTT.
-        Carregue os certificados SSL/TLS no ESP8266 para autenticação segura.
+### 1. Instalar bibliotecas necessárias
 
-    Publicar e Subscrever em Tópicos:
-        Programe o ESP8266 para publicar dados em um tópico MQTT, como leitura de sensores.
-        Configure o ESP8266 para subscrever em tópicos para receber comandos ou atualizações.
+Execute o seguinte comando para instalar a biblioteca `AWSIoTPythonSDK`:
 
-3. Testes e Validação
+```bash
+pip install AWSIoTPythonSDK
+```
 
-    Monitorar Mensagens no AWS IoT Core:
-        Verifique se as mensagens enviadas pelo ESP8266 estão sendo recebidas corretamente no AWS IoT Core.
-        Teste o envio de comandos do AWS IoT Core para o ESP8266.
+### 2. Script Python para Conexão MQTT
 
-    Validação de Segurança:
-        Assegure que a comunicação está sendo feita de forma segura e que o dispositivo está corretamente autenticado.
+Abaixo está um exemplo de script em Python para conectar ao AWS IoT Core usando MQTT:
+
+```python
+from AWSIoTPythonSDK.MQTTLib import AWSIoTMQTTClient
+
+# Configurações do AWS IoT
+client_id = "meuDispositivo"
+endpoint = "seu-endpoint-ats.iot.<regiao>.amazonaws.com"
+root_ca = "caminho/para/AmazonRootCA1.pem"
+private_key = "caminho/para/seu-certificado-private.pem.key"
+cert = "caminho/para/seu-certificado.pem.crt"
+topic = "meu/topico/mqtt"
+
+# Inicializar o cliente MQTT
+mqtt_client = AWSIoTMQTTClient(client_id)
+mqtt_client.configureEndpoint(endpoint, 8883)
+mqtt_client.configureCredentials(root_ca, private_key, cert)
+
+# Configurações adicionais do MQTT
+mqtt_client.configureOfflinePublishQueueing(-1)  # Fila de mensagens offline ilimitada
+mqtt_client.configureDrainingFrequency(2)  # Processa 2 mensagens/segundo ao reconectar
+mqtt_client.configureConnectDisconnectTimeout(10)  # Timeout para conectar/desconectar
+mqtt_client.configureMQTTOperationTimeout(5)  # Timeout para operações MQTT (publicar, assinar, etc.)
+
+# Função de callback para mensagens recebidas
+def custom_callback(client, userdata, message):
+    print(f"Mensagem recebida: {message.payload} de {message.topic}")
+
+# Conectar ao AWS IoT Core
+mqtt_client.connect()
+
+# Inscrever-se no tópico
+mqtt_client.subscribe(topic, 1, custom_callback)
+
+# Publicar uma mensagem
+mqtt_client.publish(topic, "Hello from Python!", 1)
+
+# Manter o script rodando
+import time
+while True:
+    time.sleep(1)
+```
+
+### 3. Executar o Script
+
+Certifique-se de que os caminhos para os certificados (`root_ca`, `private_key` e `cert`) estejam corretos no script. Execute o script:
+
+```bash
+python seu_script.py
+```
+
+## Testando a Conexão
+
+1. Acesse o console do AWS IoT Core.
+2. Navegue até "Test" e inscreva-se no tópico usado no script.
+3. Verifique se as mensagens publicadas aparecem no console.
 
 ## Conclusão
 
-Ao final deste projeto, o ESP8266 estará conectado ao AWS IoT Core, enviando e recebendo dados via MQTT de forma segura. Esse tipo de solução é ideal para aplicações em automação residencial, monitoramento ambiental, e outras iniciativas de IoT que necessitem de comunicação eficiente e segura com a nuvem.
-Referências
+Este projeto demonstrou como configurar uma conexão MQTT entre um dispositivo local e o AWS IoT Core usando Python. Através do protocolo MQTT e da infraestrutura de segurança da AWS, conseguimos estabelecer uma comunicação segura e eficiente para aplicações IoT.
 
-    Documentação Oficial do AWS IoT Core
-    ESP8266 Arduino Core
-    MQTT Protocol Specification
+## Próximos Passos
+
+- Implementar lógica adicional para processar mensagens.
+- Expandir o projeto para múltiplos dispositivos.
+- Integrar a comunicação MQTT com outros serviços da AWS, como Lambda, DynamoDB, etc.
+
+## Referências
+
+- [Documentação AWS IoT Core](https://docs.aws.amazon.com/iot/latest/developerguide/what-is-aws-iot.html)
+- [Biblioteca AWSIoTPythonSDK](https://github.com/aws/aws-iot-device-sdk-python)
