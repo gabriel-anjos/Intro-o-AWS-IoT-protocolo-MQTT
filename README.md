@@ -1,5 +1,5 @@
 # Intro-o-AWS-IoT-protocolo-MQTT
-Repositorio destinado ao projeto de extensão sobre serviços AWS IoT . Utilizando como exemplo um código sobre o protocolo MQTT.
+Repositorio destinado ao projeto de extensão sobre serviços AWS IoT . Utilizando como exemplo um código sobre o protocolo MQTT e a biblioteca paho-mqtt.
 
 # Projeto: Conexão MQTT em Python com AWS IoT Core
 
